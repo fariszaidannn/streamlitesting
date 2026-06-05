@@ -3,19 +3,58 @@ import pandas as pd
 
 # Page conf
 st.set_page_config(page_title="Task Checker", page_icon=":pictures/clipboard.png:", layout="centered")
-# Title
+
+# Title > HTML
 st.title("Task Checker")
-# File uploader
-uploaded_file = st.file_uploader("Upload your task file (CSV format)", type=["csv"])
-if uploaded_file is not None:
-    # Read the uploaded CSV file
-    df = pd.read_csv(uploaded_file)
-    # Display the DataFrame
-    st.write("Uploaded Task Data:")
-    st.dataframe(df)
-    # Check for missing values
-    if df.isnull().values.any():
-        st.warning("There are missing values in the task data. Please check your file.")
-    else:
-        st.success("All tasks are complete! No missing values found.")
-        
+st.markdown(
+    """
+    <div class="app-header">
+    <h1> Task Checker </h1>
+    <p> This is a simple task checker app built with Streamlit. </p>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
+
+# Conditions
+if "tasks" not in st.session_state:
+    st.session_state.tasks = [
+        {"text": "Open streamlit account", "done": True},
+        {"text": "Create a task checker app", "done": True}
+    ]
+    
+# Style > CSS
+st.markdown(
+    """
+    <style>
+    .app-header{
+        background-color: #f0f0f0;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    
+    """
+    , unsafe_allow_html=True
+)
+
+# Add task
+col_inp, col_btn = st.columns([3, 1])
+with col_inp:
+    task_text = st.text_input("Add a new task", 
+                              placeholder="Enter task description...", 
+                              label_visibility="collapsed")
+with col_btn:
+    if st.button("Add", use_container_width=True):
+        if task_text.strip():
+            st.session_state.tasks.append({"text": task_text.strip(), "done": False})
+            st.success("Task added!")
+        else:
+            st.error("Please enter a task description.")
+            
+        st.rerun()
+st.write("")
+
+# Task list
+
+# Summary
