@@ -60,20 +60,28 @@ if not st.session_state.tasks:
     st.info("No tasks added yet. Please add a task to get started.")
 
 for i, task in enumerate(st.session_state.tasks):
+    # Adjusted ratios: 0.1 for checkbox, 0.8 for text, 0.1 for the emoji button
+    # If "Delet e" still wraps in your browser, change this to [0.1, 0.75, 0.15]
     c1, c2, c3 = st.columns([0.1, 0.8, 0.1])
+    
     with c1:
-        # Removed use_container_width=True from the checkbox below
         checked = st.checkbox("", value=task["done"], key=f"chk_{i}",
                               label_visibility="collapsed")
         if checked != task["done"]:
             st.session_state.tasks[i]["done"] = checked
             st.rerun()
+            
     with c2:
-        st.write(task["text"])
+        # Optional: Add a strikethrough style if the task is done
+        if task["done"]:
+            st.markdown(f"~~{task['text']}~~")
+        else:
+            st.write(task["text"])
+            
     with c3:
-        if st.button("Delete", key=f"del_{i}", use_container_width=True):
+        # Changed "Delete" text to a trash icon to make it look natural and compact
+        if st.button("🗑️", key=f"del_{i}", use_container_width=True):
             st.session_state.tasks.pop(i)
             st.rerun()
-            
 
 # Summary
