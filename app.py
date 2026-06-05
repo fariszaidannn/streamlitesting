@@ -62,15 +62,13 @@ if not st.session_state.tasks:
 for i, task in enumerate(st.session_state.tasks):
     c1, c2, c3 = st.columns([0.1, 0.8, 0.1])
     with c1:
-        # Added the missing comma right after key=f"chk_{i}"
+        # Removed use_container_width=True from the checkbox below
         checked = st.checkbox("", value=task["done"], key=f"chk_{i}",
-                              label_visibility="collapsed", use_container_width=True)
+                              label_visibility="collapsed")
         if checked != task["done"]:
             st.session_state.tasks[i]["done"] = checked
             st.rerun()
     with c2:
-        st.markdown(
-            f"**{task['text']}**" if task["done"] else task["text"])
         st.write(task["text"])
     with c3:
         if st.button("Delete", key=f"del_{i}"):
