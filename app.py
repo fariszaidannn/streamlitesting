@@ -71,7 +71,7 @@ for i, task in enumerate(st.session_state.tasks):
     with c2:
         st.write(task["text"])
     with c3:
-        if st.button("Delete", key=f"del_{i}"):
+        if st.button("Delete", key=f"del_{i}", use_container_width=True):
             st.session_state.tasks.pop(i)
             st.rerun()
             
